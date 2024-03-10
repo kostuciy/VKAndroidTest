@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import java.io.IOException
 import javax.inject.Inject
-
+import kotlin.math.max
 
 class RepositoryImpl @Inject constructor(
     private val service: ProductService,
@@ -31,7 +31,7 @@ class RepositoryImpl @Inject constructor(
 
             val body = response.body() ?:
                 throw IOException("getAll() body is null, code: ${response.code()}")
-            insertToDb(body)
+            insertToDb(body) // TODO: fix
 
             return body
         } catch (e: IOException) {
@@ -43,16 +43,17 @@ class RepositoryImpl @Inject constructor(
 
     override suspend fun get(page: Int): List<Product> {
         try {
-            val skipAmount = (page - 1) * 20
-            val response = service.getWithSkip(skipAmount)
+            val skipAmount = max((page - 1) * 20, 0)
+            val response = service.getWithSkip(skipAmount, 20)
             if (!response.isSuccessful)
                 throw IOException("get() failed, code: ${response.code()}")
 
-            val body = response.body() ?:
-                throw IOException("get() body is null, code: ${response.code()}")
-            insertToDb(body)
+            val body =
+                response.body() ?: throw IOException("get() body is null, code: ${response.code()}")
+            val products = body.products
+            insertToDb(products)
 
-            return body
+            return products
         } catch (e: IOException) {
             throw IOException("Network error")
         } catch (e: Exception) {
@@ -60,7 +61,6 @@ class RepositoryImpl @Inject constructor(
         }
     }
 
-//    TODO: check if needed
     override suspend fun getById(id: Long): Product {
         try {
             val postsBefore = id - 1
@@ -80,9 +80,9 @@ class RepositoryImpl @Inject constructor(
         }
     }
 
-    private suspend fun insertToDb(body: List<Product>) {
+    private suspend fun insertToDb(product: List<Product>) {
         dao.clear()     // TODO: redo, not the best way to have only 1 page in db
-        body.map { it.entity() }.let {
+        product.map { it.entity() }.let {
             dao.insert(it)
         }
     }

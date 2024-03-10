@@ -22,10 +22,10 @@ interface ProductDao {
     suspend fun insert(products: List<ProductEntity>)
 
     @Query("DELETE FROM products WHERE id IN (:idList)")
-    fun delete(idList: List<Int>)   // TODO: check if needed
+    suspend fun delete(idList: List<Int>)   // TODO: check if needed
 
     @Query("DELETE FROM products")
-    fun clear()
+    suspend fun clear()
 
     // TODO: get by category
 }

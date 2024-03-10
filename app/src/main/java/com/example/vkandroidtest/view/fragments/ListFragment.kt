@@ -1,11 +1,15 @@
 package com.example.vkandroidtest.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.vkandroidtest.adapter.OnInteractionListener
 import com.example.vkandroidtest.adapter.ProductAdapter
@@ -13,6 +17,7 @@ import com.example.vkandroidtest.databinding.FragmentListBinding
 import com.example.vkandroidtest.model.dto.Product
 import com.example.vkandroidtest.viewmodel.ProductViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ListFragment : Fragment() {
@@ -30,36 +35,35 @@ class ListFragment : Fragment() {
             }
         })
 
-        val testList = listOf(
-            Product(
-                0, "dfsfd", "sdfsfdsf",
-                1222L, 0.0, 0.0,"sfadfsa", "ds",
-            ),
-            Product(
-                1, "dfsfd", "sdfsfdsf",
-                1222L, 0.0, 0.0,"sfadfsa", "ds",
-            ),
-            Product(
-                2, "dfsfd", "sdfsfdsf",
-                1222L, 0.0, 0.0,"sfadfsa", "ds",
-            ),
-            Product(
-                3, "dfsfd", "sdfsfdsf",
-                1222L, 0.0, 0.0,"sfadfsa", "ds",
-            ),
-            Product(
-                4, "dfsfd", "sdfsfdsf",
-                1222L, 0.0, 0.0,"sfadfsa", "ds",
-            )
-        )
-
         with(binding) {
             productRecyclerView.apply {
                 this.adapter = adapter
                 layoutManager = GridLayoutManager(context, 2)
             }
 
-            adapter.submitList(testList)
+//            adapter.submitList(testList)
+        }
+
+        with(viewModel) {
+            lifecycleScope.launch {
+                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                    data.collect { products ->
+                        adapter.submitList(products)
+                    }
+                }
+            }
+
+            lifecycleScope.launch {
+                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                    state.collect { state ->
+                        when {
+                            state.loading -> Log.d("ST-E", "loading") // TODO: redo
+                            state.error -> Log.d("ST-E", "error") // TODO: redo
+                            else -> Log.d("ST-E", "everything ok") // TODO: redo
+                        }
+                    }
+                }
+            }
         }
 
 

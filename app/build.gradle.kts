@@ -54,6 +54,7 @@ dependencies {
     val retrofit_version = "2.9.0"
     val gson_converter_version= "2.5.0"
     val room_version = "2.6.1"
+    val okhttplogging_version = "4.12.0"
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
@@ -69,6 +70,7 @@ dependencies {
     kapt("androidx.room:room-compiler:$room_version")
     implementation("com.google.dagger:hilt-android:$hilt_version")
     kapt("com.google.dagger:hilt-android-compiler:$hilt_version")
+    implementation ("com.squareup.okhttp3:logging-interceptor:$okhttplogging_version")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
