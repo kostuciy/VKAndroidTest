@@ -1,4 +1,4 @@
-package com.example.vkandroidtest.model.repostitory
+package com.example.vkandroidtest.model.repo
 
 import dagger.Binds
 import dagger.Module

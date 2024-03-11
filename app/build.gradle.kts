@@ -70,7 +70,8 @@ dependencies {
     kapt("androidx.room:room-compiler:$room_version")
     implementation("com.google.dagger:hilt-android:$hilt_version")
     kapt("com.google.dagger:hilt-android-compiler:$hilt_version")
-    implementation ("com.squareup.okhttp3:logging-interceptor:$okhttplogging_version")
+    implementation("com.squareup.okhttp3:logging-interceptor:$okhttplogging_version")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
