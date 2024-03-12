@@ -47,6 +47,9 @@ class ListFragment : Fragment() {
                     resources.getInteger(R.integer.grid_column_count)
                 )
             }
+            toolbar.inflateMenu(R.menu.list_menu)
+
+//            TODO: finish menu setup
 
             with(pageEditText) {
                 setOnKeyListener { view, keyCode, keyEvent ->
