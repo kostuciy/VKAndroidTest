@@ -33,10 +33,17 @@ class ProductAdapter(
                 titleTextView.text = product.title
                 descriptionTextView.text = product.description
                 ratingTextView.text = product.rating.toString()
-                priceTextView.text = product.price.toString()
+                priceTextView.text =
+                    if (product.discountPercentage != 0.0)
+                        (product.price * (1 - product.discountPercentage / 100))
+                            .toInt()
+                            .toString()
+                    else product.price.toString()
                 categoryTextView.text = product.category
 //                TODO: set listener to go to detailed fragment
-//                root.setOnClickListener {} (onInteractionListener)
+                root.setOnClickListener {
+                    onInteractionListener.onCardClicked(product)
+                }
             }
         }
     }

@@ -16,6 +16,7 @@ import javax.inject.Inject
 class ProductViewModel @Inject constructor (
     private val repository: Repository
 ) : ViewModel() {
+    
     private val _state = MutableStateFlow(
         ListState()
     )
@@ -25,11 +26,9 @@ class ProductViewModel @Inject constructor (
     private val _list = repository.list
     val list: Flow<List<Product>>
         get() = _list
-
-//    private var _page = 1
+    
     val page: Int
         get() = repository.data.skip / 20 + 1
-//        get() = _page
 
     private val maxPage: Int
         get() = repository.data.total / 20
@@ -38,6 +37,10 @@ class ProductViewModel @Inject constructor (
     val limit: Int
         get() = _limit
 
+    private lateinit var _currentProduct: Product
+    val currentProduct: Product
+        get() = _currentProduct
+    
     init {
         get() // loads page 1
     }
@@ -65,6 +68,10 @@ class ProductViewModel @Inject constructor (
                 _state.value = ListState(error = true)
             }
         }
+    }
+    
+    fun toCurrentProduct(product: Product) {
+        _currentProduct = product
     }
 
     private fun changePage(newPage: Int?): Int? =

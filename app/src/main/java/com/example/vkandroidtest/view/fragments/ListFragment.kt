@@ -11,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.vkandroidtest.R
 import com.example.vkandroidtest.adapter.OnInteractionListener
@@ -35,7 +36,8 @@ class ListFragment : Fragment() {
 
         val adapter = ProductAdapter(object : OnInteractionListener {
             override fun onCardClicked(product: Product) {
-                TODO("Not yet implemented")
+                viewModel.toCurrentProduct(product)
+                findNavController().navigate(R.id.action_listFragment_to_productFragment)
             }
         })
 

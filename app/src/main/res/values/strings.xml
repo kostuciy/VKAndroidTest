@@ -1,10 +1,13 @@
 <resources>
-    <string name="app_name">VKAndroidTest</string>
+    <string name="app_name" translatable="false">VKAndroidTest</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="error_occurred_please_try_later">Error occurred. Please try later</string>
     <string name="search_title">Search</string>
     <string name="saved_title">Saved</string>
     <string name="bookmarks">Bookmarks</string>
     <string name="hint_sort">Sort by category</string>
+    <string name="hint_category_check_box">by category</string>
+    <string name="text_stock">%1$d left in stock</string>
+    <string name="price_discount_text">%1$d (discount: %2$d%%, full price: %3$d)</string>
 </resources>

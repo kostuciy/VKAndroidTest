@@ -16,6 +16,7 @@ data class ProductEntity(
     val description: String,
     val price: Long,
     val discountPercentage: Double = 0.0,
+    val stock: Int = 0,
     val rating: Double = 0.0,
     val category: String? = null, // TODO: check if all products have category
     val thumbnail: String,
@@ -23,7 +24,7 @@ data class ProductEntity(
 ) {
     fun dto() = Product(
         id, title, description, price, discountPercentage,
-        rating, category, thumbnail, images
+        stock, rating, category, thumbnail, images
     )
 }
 

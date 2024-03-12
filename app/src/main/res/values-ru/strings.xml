@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_occurred_please_try_later">Произошла ошибка, попробуйте снова позже.</string>
+    <string name="search_title">Поиск</string>
+    <string name="saved_title">Сохранено</string>
+    <string name="bookmarks">Закладки</string>
+    <string name="hint_sort">Сортировать по категориям</string>
+    <string name="hint_category_check_box">по категориям</string>
+    <string name="text_stock">%1$d есть в наличии</string>
+    <string name="price_discount_text">%1$d (скида: %2$d%%, полная цена: %3$d)</string>
+</resources>

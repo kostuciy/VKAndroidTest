@@ -7,7 +7,7 @@ import com.example.vkandroidtest.dao.ProductDao
 import com.example.vkandroidtest.entity.Converter
 import com.example.vkandroidtest.entity.ProductEntity
 
-@Database(entities = [ProductEntity::class], version = 1, exportSchema = false)
+@Database(entities = [ProductEntity::class], version = 2, exportSchema = false)
 @TypeConverters(Converter::class)
 abstract class AppDatabase : RoomDatabase() {
 

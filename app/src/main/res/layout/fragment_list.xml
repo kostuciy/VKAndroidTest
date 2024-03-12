@@ -24,12 +24,12 @@
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:backgroundTint="@color/white"
                 android:hint="@string/hint_sort"
                 android:textColor="@color/white"
                 android:textColorHint="@color/light_gray"
                 tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="10dp" >
-            </EditText>
+                tools:layout_editor_absoluteY="10dp"></EditText>
 
         </androidx.appcompat.widget.Toolbar>
 
