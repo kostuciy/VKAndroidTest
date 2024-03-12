@@ -1,8 +1,7 @@
 package com.example.vkandroidtest.model.repo
 
-import android.util.Log
-import com.example.vkandroidtest.api.ProductService
-import com.example.vkandroidtest.dao.ProductDao
+import com.example.vkandroidtest.model.api.ProductService
+import com.example.vkandroidtest.model.db.dao.ProductDao
 import com.example.vkandroidtest.model.dto.Product
 import com.example.vkandroidtest.model.dto.ProductResponse
 import com.example.vkandroidtest.model.state.ListData
@@ -39,7 +38,7 @@ class RepositoryImpl @Inject constructor(
             updateLocalData(body)
             return body.products
         } catch (e: IOException) {
-            throw IOException("Network error") // TODO: redo exceptions
+            throw IOException("Network error")
         } catch (e: Exception) {
             throw Exception("Unexpected error")
         }
@@ -47,34 +46,39 @@ class RepositoryImpl @Inject constructor(
 
     //    gets all data from server, use getPage() to receive only part of it
     override suspend fun getAll(): List<Product> = get(1, 0)
-//        try {
-//            val response = service.getAll()
-//            if (!response.isSuccessful)
-//                throw IOException("getAll() failed, code: ${response.code()}")
-//
-//            val body = response.body() ?:
-//                throw IOException("getAll() body is null, code: ${response.code()}")
-//            val products = body.products
-////            insertToDb(products) // TODO: fix
-//
-//            return products
-//        } catch (e: IOException) {
-//            throw IOException("Network error")
-//        } catch (e: Exception) {
-//            throw Exception("Unexpected error")
-//        }
 
+    override suspend fun search(request: String): List<Product> {
+        try {
+            val response = service.search(request)
+            if (!response.isSuccessful)
+                throw IOException("get() failed, code: ${response.code()}")
 
-    private suspend fun updateLocalData(productResponse: ProductResponse) {
-        dao.clear()     // TODO: redo, not the best way to have only 1 page in db
+            val body =
+                response.body() ?: throw IOException("get() body is null, code: ${response.code()}")
+
+            updateLocalData(body, true)
+            return body.products
+        } catch (e: IOException) {
+            throw IOException("Network error")
+        } catch (e: Exception) {
+            throw Exception("Unexpected error")
+        }
+    }
+
+    private suspend fun updateLocalData(
+        productResponse: ProductResponse,
+        isSearching: Boolean = false
+    ) {
+        dao.clear()
         with(productResponse) {
             dao.insert(
                 products.map { it.entity() }
             )
+
+            if (isSearching) return
             data = ListData(
                 total, skip, limit
             )
-            Log.d("ST-E", "data - ${data}")
         }
     }
 }

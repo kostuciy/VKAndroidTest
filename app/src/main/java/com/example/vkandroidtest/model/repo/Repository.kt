@@ -12,4 +12,6 @@ interface Repository {
     suspend fun get(page: Int, limit: Int): List<Product>
 
     suspend fun getAll(): List<Product>
+
+    suspend fun search(request: String): List<Product>
 }

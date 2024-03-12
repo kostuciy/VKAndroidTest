@@ -1,4 +1,4 @@
-package com.example.vkandroidtest.api
+package com.example.vkandroidtest.model.api
 
 import com.example.vkandroidtest.model.dto.ProductResponse
 import retrofit2.Response
@@ -13,5 +13,9 @@ interface ProductService {
         @Query("limit") limit: Int = 20
     ): Response<ProductResponse>
 
-//    TODO: get list sorted by category
+
+    @GET("products/search")
+    suspend fun search(
+        @Query("q") request: String
+    ): Response<ProductResponse>
 }

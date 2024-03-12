@@ -1,4 +1,4 @@
-package com.example.vkandroidtest.api
+package com.example.vkandroidtest.model.api
 
 import com.example.vkandroidtest.BuildConfig
 import dagger.Module

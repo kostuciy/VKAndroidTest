@@ -1,6 +1,5 @@
-package com.example.vkandroidtest.adapter
+package com.example.vkandroidtest.view.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -27,8 +26,6 @@ class ProductAdapter(
 
         fun bind(product: Product) {
             with(binding) {
-//                TODO: implement glide download
-//                thumbnailImageView (glide bebe)
                 thumbnailImageView.loadFromUrl(product.thumbnail)
                 titleTextView.text = product.title
                 descriptionTextView.text = product.description
@@ -40,7 +37,6 @@ class ProductAdapter(
                             .toString()
                     else product.price.toString()
                 categoryTextView.text = product.category
-//                TODO: set listener to go to detailed fragment
                 root.setOnClickListener {
                     onInteractionListener.onCardClicked(product)
                 }

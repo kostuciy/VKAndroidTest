@@ -1,9 +1,9 @@
-package com.example.vkandroidtest
+package com.example.vkandroidtest.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
+import com.example.vkandroidtest.R
 import com.example.vkandroidtest.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 

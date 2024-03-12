@@ -3,7 +3,7 @@ package com.example.vkandroidtest.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.vkandroidtest.model.dto.Product
-import com.example.vkandroidtest.state.ListState
+import com.example.vkandroidtest.model.state.ListState
 import com.example.vkandroidtest.model.repo.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -26,6 +26,10 @@ class ProductViewModel @Inject constructor (
     private val _list = repository.list
     val list: Flow<List<Product>>
         get() = _list
+
+    private lateinit var _currentProduct: Product
+    val currentProduct: Product
+        get() = _currentProduct
     
     val page: Int
         get() = repository.data.skip / 20 + 1
@@ -33,16 +37,9 @@ class ProductViewModel @Inject constructor (
     private val maxPage: Int
         get() = repository.data.total / 20
 
-    private var _limit = 20   // TODO: make option to change limit
-    val limit: Int
-        get() = _limit
 
-    private lateinit var _currentProduct: Product
-    val currentProduct: Product
-        get() = _currentProduct
-    
     init {
-        get() // loads page 1
+        get() // loads first page
     }
 
     fun get(page: Int? = null) {
@@ -50,8 +47,20 @@ class ProductViewModel @Inject constructor (
         viewModelScope.launch {
             try {
                 _state.value = ListState(loading = true)
-                repository.get(newPage, limit)
+                repository.get(newPage, 20)
                 _state.value = ListState()
+            } catch (e: Exception) {
+                _state.value = ListState(error = true)
+            }
+        }
+    }
+
+    fun search(request: String) {
+        viewModelScope.launch {
+            try {
+                _state.value = ListState(loading = true, searching = true)
+                repository.search(request)
+                _state.value = ListState(searching = true)
             } catch (e: Exception) {
                 _state.value = ListState(error = true)
             }
@@ -62,7 +71,7 @@ class ProductViewModel @Inject constructor (
         viewModelScope.launch {
             try {
                 _state.value = ListState(refreshing = true)
-                repository.get(page, limit)
+                repository.get(page, 20)
                 _state.value = ListState()
             } catch (e: Exception) {
                 _state.value = ListState(error = true)

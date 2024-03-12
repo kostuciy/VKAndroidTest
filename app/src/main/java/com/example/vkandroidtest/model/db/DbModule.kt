@@ -1,4 +1,4 @@
-package com.example.vkandroidtest.db
+package com.example.vkandroidtest.model.db
 
 import android.content.Context
 import androidx.room.Room

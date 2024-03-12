@@ -1,4 +1,4 @@
-package com.example.vkandroidtest.fragments
+package com.example.vkandroidtest.view.fragments
 
 import android.os.Bundle
 import android.view.KeyEvent
@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
@@ -14,8 +15,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.vkandroidtest.R
-import com.example.vkandroidtest.adapter.OnInteractionListener
-import com.example.vkandroidtest.adapter.ProductAdapter
+import com.example.vkandroidtest.view.adapter.OnInteractionListener
+import com.example.vkandroidtest.view.adapter.ProductAdapter
 import com.example.vkandroidtest.databinding.FragmentListBinding
 import com.example.vkandroidtest.model.dto.Product
 import com.example.vkandroidtest.utlis.Utils
@@ -49,9 +50,14 @@ class ListFragment : Fragment() {
                     resources.getInteger(R.integer.grid_column_count)
                 )
             }
-            toolbar.inflateMenu(R.menu.list_menu)
 
-//            TODO: finish menu setup
+            searchEditText.doAfterTextChanged {
+                val request = it.toString()
+                if (request.isEmpty()) {
+                    viewModel.refresh()
+                } else viewModel.search(request)
+
+            }
 
             with(pageEditText) {
                 setOnKeyListener { view, keyCode, keyEvent ->
@@ -94,28 +100,12 @@ class ListFragment : Fragment() {
                             swipeRefresh.isRefreshing = state.refreshing
                             errorTextView.isVisible = state.error
                             productRecyclerView.isVisible = !state.error
+                            linearLayout.isVisible = !state.searching
                         }
-
-
-//                        when {
-//                            state.loading -> {
-//                                binding.productRecyclerView.isGone = true
-//                                binding.progressBar.isVisible = true
-//                            }
-//                            state.error -> Log.d("ST-E", "error") // TODO: redo
-//                            state.refreshing -> {
-//                                binding.swipeRefresh.isRefreshing = state.
-//                            }
-//                            else -> {
-//                                binding.productRecyclerView.isVisible = true
-//                                binding.progressBar.isGone = true
-//                            }
-//                        }
                     }
                 }
             }
         }
-
 
 
         return binding.root

@@ -1,6 +1,6 @@
 package com.example.vkandroidtest.model.dto
 
-import com.example.vkandroidtest.entity.ProductEntity
+import com.example.vkandroidtest.model.db.entity.ProductEntity
 
 data class Product(
     val id: Long = 0L,
