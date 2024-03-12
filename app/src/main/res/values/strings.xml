@@ -3,4 +3,6 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="error_occurred_please_try_later">Error occurred. Please try later</string>
+    <string name="search_title">Search</string>
+    <string name="saved_title">Saved</string>
 </resources>

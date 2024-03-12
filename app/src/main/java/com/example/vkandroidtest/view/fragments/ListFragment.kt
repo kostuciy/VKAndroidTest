@@ -12,6 +12,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.vkandroidtest.R
 import com.example.vkandroidtest.adapter.OnInteractionListener
 import com.example.vkandroidtest.adapter.ProductAdapter
 import com.example.vkandroidtest.databinding.FragmentListBinding
@@ -41,7 +42,10 @@ class ListFragment : Fragment() {
         with(binding) {
             productRecyclerView.apply {
                 this.adapter = adapter
-                layoutManager = GridLayoutManager(context, 2)
+                layoutManager = GridLayoutManager(
+                    context,
+                    resources.getInteger(R.integer.grid_column_count)
+                )
             }
 
             with(pageEditText) {

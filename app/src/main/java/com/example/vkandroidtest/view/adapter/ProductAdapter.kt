@@ -32,6 +32,9 @@ class ProductAdapter(
                 thumbnailImageView.loadFromUrl(product.thumbnail)
                 titleTextView.text = product.title
                 descriptionTextView.text = product.description
+                ratingTextView.text = product.rating.toString()
+                priceTextView.text = product.price.toString()
+                categoryTextView.text = product.category
 //                TODO: set listener to go to detailed fragment
 //                root.setOnClickListener {} (onInteractionListener)
             }
