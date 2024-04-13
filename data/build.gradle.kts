@@ -1,22 +1,19 @@
 plugins {
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
-    id("com.android.application")
+    id("com.android.library")
     id("org.jetbrains.kotlin.android")
 }
 
 android {
-    namespace = "com.example.vkandroidtest"
+    namespace = "com.example.data"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.vkandroidtest"
         minSdk = 27
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -26,31 +23,20 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            buildConfigField("String", "BASE_URL", "\"https://dummyjson.com/\"")
-        }
-        debug {
-            buildConfigField("String", "BASE_URL", "\"https://dummyjson.com/\"")
         }
     }
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-
     kotlinOptions {
         jvmTarget = "1.8"
-    }
-
-    buildFeatures {
-        viewBinding = true
-        buildConfig = true
     }
 }
 
 dependencies {
     implementation(project(":domain"))
-    implementation(project(":data"))
+
     val nav_version = "2.7.7"
     val hilt_version = "2.46"
     val retrofit_version = "2.9.0"
@@ -78,9 +64,13 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:$glide_version")
 
 
-testImplementation("junit:junit:4.13.2")
+    testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+}
+
+kapt {
+    correctErrorTypes = true
 }
 
 kapt {

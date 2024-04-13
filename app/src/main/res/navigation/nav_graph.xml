@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/listFragment"
-        android:name="com.example.vkandroidtest.view.fragments.ListFragment"
+        android:name="com.example.vkandroidtest.presentation.fragments.ListFragment"
         android:label="fragment_list"
         tools:layout="@layout/fragment_list" >
         <action
@@ -15,7 +15,7 @@
     </fragment>
     <fragment
         android:id="@+id/productFragment"
-        android:name="com.example.vkandroidtest.view.fragments.ProductFragment"
+        android:name="com.example.vkandroidtest.presentation.fragments.ProductFragment"
         android:label="fragment_product"
         tools:layout="@layout/fragment_product" />
 </navigation>

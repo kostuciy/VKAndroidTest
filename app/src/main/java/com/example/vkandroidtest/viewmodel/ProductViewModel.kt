@@ -2,9 +2,14 @@ package com.example.vkandroidtest.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.vkandroidtest.model.dto.Product
-import com.example.vkandroidtest.model.state.ListState
-import com.example.vkandroidtest.model.repo.Repository
+import com.example.vkandroidtest.model.ListState
+import com.example.vkandroidtest.model.Product
+import com.example.vkandroidtest.usecase.ChangePageUseCase
+import com.example.vkandroidtest.usecase.GetListUseCase
+import com.example.vkandroidtest.usecase.GetPageUseCase
+import com.example.vkandroidtest.usecase.GetSkipUseCase
+import com.example.vkandroidtest.usecase.GetTotalUseCase
+import com.example.vkandroidtest.usecase.SearchUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +19,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProductViewModel @Inject constructor (
-    private val repository: Repository
+//    private val repository: Repository,
+    private val getPageUseCase: GetPageUseCase,
+    private val changePageUseCase: ChangePageUseCase,
+    private val searchUseCase: SearchUseCase,
+    private val getListUseCase: GetListUseCase,
+    private val getSkipUseCase: GetSkipUseCase,
+    private val getTotalUseCase: GetTotalUseCase
+
 ) : ViewModel() {
     
     private val _state = MutableStateFlow(
@@ -23,23 +35,27 @@ class ProductViewModel @Inject constructor (
     val state: StateFlow<ListState>
         get() = _state
 
-    private val _list = repository.list
-    val list: Flow<List<Product>>
-        get() = _list
+    val list: Flow<List<Product>> = getListUseCase.execute()
 
     private lateinit var _currentProduct: Product
     val currentProduct: Product
         get() = _currentProduct
-    
-    val page: Int
-        get() = repository.data.skip / 20 + 1
 
+//    TODO: GetSkipUseCase()
+    val page: Int
+        get() = getSkipUseCase.execute() / 20 + 1
+
+//    TODO: GetTotalUseCase()
     private val maxPage: Int
-        get() = repository.data.total / 20
+        get() = getTotalUseCase.execute() / 20
 
 
     init {
         get() // loads first page
+    }
+
+    fun toCurrentProduct(product: Product) {
+        _currentProduct = product
     }
 
     fun get(page: Int? = null) {
@@ -47,7 +63,7 @@ class ProductViewModel @Inject constructor (
         viewModelScope.launch {
             try {
                 _state.value = ListState(loading = true)
-                repository.get(newPage, 20)
+                getPageUseCase.execute(newPage)
                 _state.value = ListState()
             } catch (e: Exception) {
                 _state.value = ListState(error = true)
@@ -59,7 +75,7 @@ class ProductViewModel @Inject constructor (
         viewModelScope.launch {
             try {
                 _state.value = ListState(loading = true, searching = true)
-                repository.search(request)
+                searchUseCase.execute(request)
                 _state.value = ListState(searching = true)
             } catch (e: Exception) {
                 _state.value = ListState(error = true)
@@ -71,32 +87,15 @@ class ProductViewModel @Inject constructor (
         viewModelScope.launch {
             try {
                 _state.value = ListState(refreshing = true)
-                repository.get(page, 20)
+                getPageUseCase.execute(page)
                 _state.value = ListState()
             } catch (e: Exception) {
                 _state.value = ListState(error = true)
             }
         }
     }
-    
-    fun toCurrentProduct(product: Product) {
-        _currentProduct = product
-    }
 
     private fun changePage(newPage: Int?): Int? =
-        when {
-            newPage == null -> 1
-            newPage == page -> null
-            newPage > maxPage -> {
-                if (page == maxPage) null
-                else maxPage
-            }
-
-            newPage < 1 -> {
-                if (page == 1) null
-                else 1
-            }
-            else -> newPage
-        }
+        changePageUseCase.execute(newPage, page, maxPage)
 
 }
