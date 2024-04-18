@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="green">#2E9B00</color>
+    <color name="green">#9AEB78</color>
     <color name="gold">#E7AD00</color>
+    <color name="primary_blue">#087079</color>
+    <color name="primary_orange">#B84C4C</color>
+    <color name="primary_secondary_blue">#222723</color>
+    <color name="primary_text">#FFD5D5</color>
 </resources>
