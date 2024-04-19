@@ -44,6 +44,8 @@ dependencies {
     val room_version = "2.6.1"
     val okhttplogging_version = "4.12.0"
     val glide_version = "4.16.0"
+    val rxandroid_version = "3.0.2"
+    val rxjava_version = "3.1.5"
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
@@ -62,7 +64,8 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:$okhttplogging_version")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
     implementation("com.github.bumptech.glide:glide:$glide_version")
-
+    implementation("io.reactivex.rxjava3:rxandroid:$rxandroid_version")
+    implementation("io.reactivex.rxjava3:rxjava:$rxjava_version")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

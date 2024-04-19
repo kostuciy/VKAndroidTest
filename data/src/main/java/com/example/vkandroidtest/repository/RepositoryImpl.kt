@@ -6,6 +6,9 @@ import com.example.vkandroidtest.db.dao.ProductDao
 import com.example.vkandroidtest.model.Product
 import com.example.vkandroidtest.model.ListData
 import com.example.vkandroidtest.utils.ModelUtils
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
@@ -18,14 +21,17 @@ class RepositoryImpl @Inject constructor(
     private val dao: ProductDao
 ) : Repository {
 
-    override val list: Flow<List<Product>> =
-        dao.get().map { postEntityList ->
-            postEntityList.map { ModelUtils.toModel(it) }
-        }.flowOn(Dispatchers.Main)
+    override val list: Flowable<List<Product>> =
+        dao.get().concatMap { postEntityList ->
+            Flowable.just(postEntityList.map { ModelUtils.toModel(it) })
+        }
 
+//        dao.get().map { postEntityList ->
+//            postEntityList.map { ModelUtils.toModel(it) }
+//        }.flowOn(Dispatchers.Main)
     override var data = ListData()
 
-    override suspend fun get(page: Int, limit: Int): List<Product> {
+    override fun get(page: Int, limit: Int): List<Product> {
         try {
             val skipAmount = (page - 1) * 20
 
@@ -46,9 +52,9 @@ class RepositoryImpl @Inject constructor(
     }
 
     //    gets all data from server, use getPage() to receive only part of it
-    override suspend fun getAll(): List<Product> = get(1, 0)
+    override fun getAll(): List<Product> = get(1, 0)
 
-    override suspend fun search(request: String): List<Product> {
+    override fun search(request: String): List<Product> {
         try {
             val response = service.search(request)
             if (!response.isSuccessful)
@@ -66,7 +72,7 @@ class RepositoryImpl @Inject constructor(
         }
     }
 
-    private suspend fun updateLocalData(
+    private fun updateLocalData(
         productResponse: ProductResponse,
         isSearching: Boolean = false
     ) {
