@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="GeneralImageButton">
-        <item name="android:background">@drawable/button_gradient</item>
+        <item name="android:background">@drawable/button_gradient_ripple</item>
         <item name="tint">@color/primary_text</item>
     </style>
 
