@@ -15,7 +15,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/primary_orange">
+            android:background="@drawable/card_gradient">
 
             <ImageView
                 android:id="@+id/thumbnail_image_view"
@@ -32,16 +32,14 @@
 
             <TextView
                 android:id="@+id/title_text_view"
+                style="@style/Text.Main"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:paddingHorizontal="4dp"
-                android:textColor="@color/primary_text"
-                android:textColorHighlight="@color/primary_secondary_blue"
-                android:textColorLink="@color/primary_secondary_blue"
-                android:textStyle="bold"
+                android:textColorLink="@color/cyan"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -50,6 +48,7 @@
 
             <TextView
                 android:id="@+id/description_text_view"
+                style="@style/Text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -57,7 +56,6 @@
                 android:maxLines="2"
                 android:paddingHorizontal="4dp"
                 android:paddingBottom="4dp"
-                android:textColor="@color/primary_text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -81,7 +79,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
-                android:textColor="@color/primary_secondary_blue"
+                android:textColor="@color/cyan"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/category_text_view"
@@ -94,7 +92,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:textColor="@color/primary_blue"
+                android:textColor="@color/ocean_blue"
                 android:textStyle="bold|italic"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/description_text_view"
