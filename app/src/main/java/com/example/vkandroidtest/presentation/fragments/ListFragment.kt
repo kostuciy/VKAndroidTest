@@ -97,10 +97,10 @@ class ListFragment : Fragment() {
                     state.collect { state ->
                         with(binding) {
                             progressBar.isVisible = state.loading
-                            swipeRefresh.isRefreshing = state.refreshing
-                            errorTextView.isVisible = state.error
                             productRecyclerView.isVisible = !state.error
+                            errorTextView.isVisible = state.error
                             linearLayout.isVisible = !state.searching
+                            swipeRefresh.isRefreshing = state.refreshing
                         }
                     }
                 }
