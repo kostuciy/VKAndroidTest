@@ -2,9 +2,12 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.VKAndroidTest" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <item name="colorPrimary">@color/primary_blue</item>
-        <item name="colorSecondary">@color/primary_secondary_blue</item>
+        <item name="colorPrimary">@color/ocean_blue</item>
+        <item name="colorSecondary">@color/cyan</item>
     </style>
 
-    <style name="Theme.VKAndroidTest" parent="Base.Theme.VKAndroidTest" />
+    <style name="Theme.VKAndroidTest" parent="Base.Theme.VKAndroidTest">
+        <item name="colorPrimary">@color/ocean_blue</item>
+        <item name="colorSecondary">@color/cyan</item>
+    </style>
 </resources>

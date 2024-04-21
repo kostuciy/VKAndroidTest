@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary_background">@color/ocean_blue</color>
+    <color name="primary_background_end">@color/ocean_blue_bright</color>
+    <color name="secondary_background">@color/cyan</color>
+    <color name="secondary_background_end">@color/cyan_bright</color>
+    <color name="primary_buttons">@color/cream</color>
+    <color name="primary_buttons_end">@color/cream_bright</color>
+    <color name="primary_text">@color/white_cyan</color>
+    <color name="text_price">@color/green</color>
+</resources>

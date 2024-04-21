@@ -18,4 +18,10 @@
         android:height="60dp"
         android:width="270dp" />
 
+    <gradient
+        android:type="linear"
+        android:angle="0"
+        android:startColor="@color/primary_background"
+        android:endColor="@color/primary_background_end" />
+
 </shape>

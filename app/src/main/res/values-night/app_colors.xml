@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary_background">@color/ocean_blue_dark</color>
+    <color name="primary_background_end">@color/ocean_blue_darker</color>
+    <color name="secondary_background">@color/dark_gray</color>
+    <color name="secondary_background_end">@color/black</color>
+    <color name="primary_buttons">@color/dark_orange</color>
+    <color name="primary_buttons_end">@color/darker_orange</color>
+    <color name="primary_text">@color/cream_bright</color>
+</resources>

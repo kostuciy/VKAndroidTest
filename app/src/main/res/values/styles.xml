@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="GeneralImageButton">
+        <item name="android:background">@drawable/button_gradient</item>
+        <item name="tint">@color/primary_text</item>
+    </style>
+
+    <style name="Text">
+        <item name="android:textColor">@color/primary_text</item>
+        <item name="android:textColorHighlight">@color/primary_buttons</item>
+        <item name="android:textColorHint">@color/primary_text</item>
+    </style>
+
+    <style name="Text.Main">
+        <item name="android:textStyle">bold</item>
+    </style>
+</resources>
