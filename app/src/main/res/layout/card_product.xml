@@ -24,6 +24,7 @@
                 android:adjustViewBounds="false"
                 android:contentDescription="@string/cd_thumbnail"
                 android:scaleType="centerCrop"
+                android:transitionName="transition_preview"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
