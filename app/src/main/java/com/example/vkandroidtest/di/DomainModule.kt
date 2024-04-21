@@ -3,6 +3,7 @@ package com.example.vkandroidtest.di
 import com.example.vkandroidtest.repository.Repository
 import com.example.vkandroidtest.repository.RepositoryImpl
 import com.example.vkandroidtest.usecase.ChangePageUseCase
+import com.example.vkandroidtest.usecase.DisposeRepoUseCase
 import com.example.vkandroidtest.usecase.GetListUseCase
 import com.example.vkandroidtest.usecase.GetPageUseCase
 import com.example.vkandroidtest.usecase.GetSkipUseCase
@@ -61,4 +62,9 @@ object UseCaseModule {
     @Provides
     fun provideSearchUseCase(repository: Repository) =
         SearchUseCase(repository)
+
+    @ViewModelScoped
+    @Provides
+    fun provideDisposeRepoUseCase(repository: Repository) =
+        DisposeRepoUseCase(repository)
 }

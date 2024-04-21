@@ -9,9 +9,6 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.vkandroidtest.R
@@ -22,12 +19,16 @@ import com.example.vkandroidtest.model.Product
 import com.example.vkandroidtest.utlis.AppUtils
 import com.example.vkandroidtest.viewmodel.ProductViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
 class ListFragment : Fragment() {
     private val viewModel: ProductViewModel by activityViewModels()
+    private val disposables by lazy {  CompositeDisposable() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,7 +57,6 @@ class ListFragment : Fragment() {
                 if (request.isEmpty()) {
                     viewModel.refresh()
                 } else viewModel.search(request)
-
             }
 
             with(pageEditText) {
@@ -83,32 +83,56 @@ class ListFragment : Fragment() {
         }
 
         with(viewModel) {
-            lifecycleScope.launch {
-                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                    list.collect { products ->
-                        adapter.submitList(products)
-                        binding.pageEditText.setText("${viewModel.page}")
-                    }
+            list.subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { products ->
+                    adapter.submitList(products)
+                    binding.pageEditText.setText("${viewModel.page}")
+                }.let {
+                    disposables.add(it)
+                }
+
+            state.observe(viewLifecycleOwner) { state ->
+                with(binding) {
+                    progressBar.isVisible = state.loading
+                    swipeRefresh.isRefreshing = state.refreshing
+                    errorTextView.isVisible = state.error
+                    productRecyclerView.isVisible = !state.error
+                    linearLayout.isVisible = !state.searching
                 }
             }
 
-            lifecycleScope.launch {
-                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                    state.collect { state ->
-                        with(binding) {
-                            progressBar.isVisible = state.loading
-                            swipeRefresh.isRefreshing = state.refreshing
-                            errorTextView.isVisible = state.error
-                            productRecyclerView.isVisible = !state.error
-                            linearLayout.isVisible = !state.searching
-                        }
-                    }
-                }
-            }
+//            lifecycleScope.launch {
+//                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+//                    list.collect { products ->
+//                        adapter.submitList(products)
+//                        binding.pageEditText.setText("${viewModel.page}")
+//                    }
+//                }
+//            }
+
+//            lifecycleScope.launch {
+//                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+//                    state.collect { state ->
+//                        with(binding) {
+//                            progressBar.isVisible = state.loading
+//                            swipeRefresh.isRefreshing = state.refreshing
+//                            errorTextView.isVisible = state.error
+//                            productRecyclerView.isVisible = !state.error
+//                            linearLayout.isVisible = !state.searching
+//                        }
+//                    }
+//                }
+//            }
         }
 
 
         return binding.root
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        disposables.dispose()
     }
 
 }

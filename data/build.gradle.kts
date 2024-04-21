@@ -66,6 +66,7 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:$glide_version")
     implementation("io.reactivex.rxjava3:rxandroid:$rxandroid_version")
     implementation("io.reactivex.rxjava3:rxjava:$rxjava_version")
+    implementation("androidx.room:room-rxjava3:$room_version")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

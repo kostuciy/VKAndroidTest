@@ -5,9 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.vkandroidtest.db.entity.ProductEntity
-import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Flowable
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ProductDao {
@@ -18,14 +16,14 @@ interface ProductDao {
     fun get(): Flowable<List<ProductEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(product: ProductEntity): Completable
+    fun insert(product: ProductEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(products: List<ProductEntity>): Completable
+    fun insert(products: List<ProductEntity>)
 
     @Query("DELETE FROM products WHERE id IN (:idList)")
-    fun delete(idList: List<Int>): Completable
+    fun delete(idList: List<Int>)
 
     @Query("DELETE FROM products")
-    fun clear(): Completable
+    fun clear()
 }

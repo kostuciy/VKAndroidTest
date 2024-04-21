@@ -2,10 +2,10 @@ package com.example.vkandroidtest.usecase
 
 import com.example.vkandroidtest.model.Product
 import com.example.vkandroidtest.repository.Repository
-import kotlinx.coroutines.flow.Flow
+import io.reactivex.rxjava3.core.Flowable
 
 class GetListUseCase(private val repository: Repository) {
 
-    fun execute(): Flow<List<Product>> =
+    fun execute(): Flowable<List<Product>> =
         repository.list
 }

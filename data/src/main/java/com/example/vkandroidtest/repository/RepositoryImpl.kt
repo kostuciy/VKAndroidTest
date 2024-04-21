@@ -6,13 +6,10 @@ import com.example.vkandroidtest.db.dao.ProductDao
 import com.example.vkandroidtest.model.Product
 import com.example.vkandroidtest.model.ListData
 import com.example.vkandroidtest.utils.ModelUtils
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
 import java.io.IOException
 import javax.inject.Inject
 
@@ -21,54 +18,50 @@ class RepositoryImpl @Inject constructor(
     private val dao: ProductDao
 ) : Repository {
 
-    override val list: Flowable<List<Product>> =
+    override val list: Flowable<List<Product>> =    // TODO: check if need to drop values
         dao.get().concatMap { postEntityList ->
             Flowable.just(postEntityList.map { ModelUtils.toModel(it) })
         }
 
-//        dao.get().map { postEntityList ->
-//            postEntityList.map { ModelUtils.toModel(it) }
-//        }.flowOn(Dispatchers.Main)
     override var data = ListData()
 
-    override fun get(page: Int, limit: Int): List<Product> {
-        try {
+    private val disposables = CompositeDisposable()
+
+    override fun get(page: Int, limit: Int): Completable { // TODO: check if Completable is needed
+        return Completable.create { emitter ->
             val skipAmount = (page - 1) * 20
-
-            val response = service.get(skipAmount, limit)
-            if (!response.isSuccessful)
-                throw IOException("get() failed, code: ${response.code()}")
-
-            val body =
-                response.body() ?: throw IOException("get() body is null, code: ${response.code()}")
-
-            updateLocalData(body)
-            return body.products
-        } catch (e: IOException) {
-            throw IOException("Network error")
-        } catch (e: Exception) {
-            throw Exception("Unexpected error")
+            service.get(skipAmount, limit)
+                .subscribeOn(Schedulers.io())
+                .subscribe(
+                    {
+                        updateLocalData(it)
+                        emitter.onComplete()
+                    },
+                    { emitter.onError(
+                            if (it is IOException) IOException("Network error")
+                            else Exception("Unexpected error")
+                            ) }
+                ).let { disposables.add(it) }
         }
     }
 
     //    gets all data from server, use getPage() to receive only part of it
-    override fun getAll(): List<Product> = get(1, 0)
+    override fun getAll() = get(1, 0)
 
-    override fun search(request: String): List<Product> {
-        try {
-            val response = service.search(request)
-            if (!response.isSuccessful)
-                throw IOException("get() failed, code: ${response.code()}")
-
-            val body =
-                response.body() ?: throw IOException("get() body is null, code: ${response.code()}")
-
-            updateLocalData(body, true)
-            return body.products
-        } catch (e: IOException) {
-            throw IOException("Network error")
-        } catch (e: Exception) {
-            throw Exception("Unexpected error")
+    override fun search(request: String): Completable {
+        return Completable.create { emitter ->
+            service.search(request)
+                .subscribeOn(Schedulers.io())
+                .subscribe(
+                    {
+                        updateLocalData(it)
+                        emitter.onComplete()
+                    },
+                    { emitter.onError(
+                            if (it is IOException) IOException("Network error")
+                            else Exception("Unexpected error")
+                            ) }
+                ).let { disposables.add(it) }
         }
     }
 
@@ -87,5 +80,9 @@ class RepositoryImpl @Inject constructor(
                 total, skip, limit
             )
         }
+    }
+
+    override fun clearDisposables() {
+        disposables.dispose()
     }
 }
