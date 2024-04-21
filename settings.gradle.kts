@@ -14,6 +14,6 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "VKAndroidTest"
-include(":app")
-include(":data")
-include(":domain")
+include(":app", ":domain", ":data")
+//include(":data")
+//include(":domain")
